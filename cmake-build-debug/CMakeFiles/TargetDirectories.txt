@@ -1,0 +1,3 @@
+/Users/alpercakan/Desktop/comp_compiler/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/alpercakan/Desktop/comp_compiler/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/alpercakan/Desktop/comp_compiler/cmake-build-debug/CMakeFiles/comp_compiler.dir

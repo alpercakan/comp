@@ -1,0 +1,30 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/alpercakan/Desktop/comp_compiler/Parser.cpp
+Parser.h
+/Users/alpercakan/Desktop/comp_compiler/Parser.h
+
+/Users/alpercakan/Desktop/comp_compiler/Parser.h
+string
+-
+
+/Users/alpercakan/Desktop/comp_compiler/Texts.h
+string
+-
+
+/Users/alpercakan/Desktop/comp_compiler/main.cpp
+iostream
+-
+vector
+-
+map
+-
+Texts.h
+/Users/alpercakan/Desktop/comp_compiler/Texts.h
+
