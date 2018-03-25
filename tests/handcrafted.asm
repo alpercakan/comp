@@ -311,3 +311,5 @@ EXIT:
 ;;;;;; Internal variables and constants
 STRING_CLRF: DB 0dh, 0ah, '$'
 HEX_DIGIT_CHAR_ARRAY: DB '0123456789abcdef'
+
+;;;;;; handcrafted.asm
