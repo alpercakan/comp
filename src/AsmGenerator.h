@@ -9,7 +9,6 @@
 #include <vector>
 #include <unordered_map>
 
-namespace Comp {
 
 class AsmGenerator final : public ICodeGenerator {
 public:
@@ -50,6 +49,5 @@ private:
   void addLines(const std::vector<std::string> &);
 };
 
-} // namespace Comp
 
 #endif //COMP_COMPILER_ASMGENERATOR_H

@@ -9,8 +9,6 @@ using std::pair;
 using std::vector;
 using std::exception;
 
-namespace Comp {
-
 // Use our own checks because isalnum, isspace etc. are locale-dependent
 #define IS_SPACE(x) ((x) == '\t' || (x) == ' ' || (x) == '\n' || (x) == '\r')
 
@@ -365,5 +363,3 @@ int Parser::factor(const string &str, int index, PostfixStack &ps) {
 
   return pos;
 }
-
-} // namespace Comp

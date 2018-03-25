@@ -5,7 +5,6 @@
 #ifndef COMP_COMPILER_ICODEGENERATOR_H
 #define COMP_COMPILER_ICODEGENERATOR_H
 
-#include <set>
 #include <vector>
 #include <string>
 

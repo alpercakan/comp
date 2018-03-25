@@ -144,16 +144,16 @@ void interruptHandler(int code) {
 }
 
 
-string getParseErrorMessage(Comp::Parser::ParseError error) {
+string getParseErrorMessage(Parser::ParseError error) {
   // ParseError to error message mapping
-  static const unordered_map<Comp::Parser::ParseError, string, std::hash<int>> errorMsgMap = {
-    { Comp::Parser::ParseError::ILLEGAL_ID_CHARACTER, ILLEGAL_ID_CHARACTER_MESSAGE },
-    { Comp::Parser::ParseError::NO_ID_ON_LHS, NO_ID_ON_LHS_MESSAGE },
-    { Comp::Parser::ParseError::POW_PARENTHESES_NOT_CLOSED, POW_PARENTHESES_NOT_CLOSED_MESSAGE },
-    { Comp::Parser::ParseError::EXPECTED_COMMA_IN_POW, EXPECTED_COMMA_IN_POW_MESSAGE },
-    { Comp::Parser::ParseError::PARENTHESES_NOT_BALANCED, PARENTHESES_NOT_BALANCED_MESSAGE },
-    { Comp::Parser::ParseError::EXPECTED_FACTOR, EXPECTED_FACTOR_MESSAGE },
-    { Comp::Parser::ParseError::EXPECTED_NUMBER, EXPECTED_NUMBER_MESSAGE }
+  static const unordered_map<Parser::ParseError, string, std::hash<int>> errorMsgMap = {
+    { Parser::ParseError::ILLEGAL_ID_CHARACTER, ILLEGAL_ID_CHARACTER_MESSAGE },
+    { Parser::ParseError::NO_ID_ON_LHS, NO_ID_ON_LHS_MESSAGE },
+    { Parser::ParseError::POW_PARENTHESES_NOT_CLOSED, POW_PARENTHESES_NOT_CLOSED_MESSAGE },
+    { Parser::ParseError::EXPECTED_COMMA_IN_POW, EXPECTED_COMMA_IN_POW_MESSAGE },
+    { Parser::ParseError::PARENTHESES_NOT_BALANCED, PARENTHESES_NOT_BALANCED_MESSAGE },
+    { Parser::ParseError::EXPECTED_FACTOR, EXPECTED_FACTOR_MESSAGE },
+    { Parser::ParseError::EXPECTED_NUMBER, EXPECTED_NUMBER_MESSAGE }
   };
 
   auto it = errorMsgMap.find(error);
@@ -206,8 +206,8 @@ int main(int argc, char *argv[]) {
       return EXIT_FAILURE;
     }
 
-    Comp::AsmGenerator generator(templateFile);
-    Comp::Parser parser(input, generator);
+    AsmGenerator generator(templateFile);
+    Parser parser(input, generator);
 
     if (!parser.parse()) {
       cout << COMPILATION_FAILURE_MESSAGE(parser.getErrorLine(), getParseErrorMessage(parser.getParseError()));

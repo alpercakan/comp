@@ -9,7 +9,6 @@
 #include <vector>
 #include "ICodeGenerator.h"
 
-namespace Comp {
 class Parser {
 public:
 
@@ -76,8 +75,6 @@ private:
   int id(const std::string&, int, std::vector<std::pair<ICodeGenerator::ExprElemType, std::string>>&);
   int num(const std::string&, int, std::vector<std::pair<ICodeGenerator::ExprElemType, std::string>>&);
 };
-
-} // namespace Comp
 
 
 #endif //COMP_COMPILER_PARSER_H

@@ -10,7 +10,6 @@ using std::pair;
 using std::find;
 using std::to_string;
 
-namespace Comp {
 
 // A86 Assembly codes, which uses our helper code handwritten in the template
 
@@ -217,6 +216,5 @@ std::vector<std::string> AsmGenerator::getOutput() noexcept {
   return res;
 }
 
-} // namespace Comp
 
 
