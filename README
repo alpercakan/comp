@@ -17,7 +17,7 @@ Running:
   NOTE: While running the program, handcrafted.asm must be in the same directory as the program
 
 Testing:
-  The test files and their expected output Assembly code are in tests/
+  The test files and their expected Assembly code output are in tests/
 
   Since you need A86 assembler to assemble the output codes, there is no test automation.
   However, expeceted outputs of the output codes are given, too, for manual testing. 
