@@ -141,10 +141,14 @@ void interruptHandler(int code) {
 
 
 string getParseErrorMessage(Comp::Parser::ParseError error) {
-  cout << "alper " << error << endl;
   static const unordered_map<Comp::Parser::ParseError, string, std::hash<int>> errorMsgMap = {
     { Comp::Parser::ParseError::ILLEGAL_ID_CHARACTER, ILLEGAL_ID_CHARACTER_MESSAGE },
-    {  }
+    { Comp::Parser::ParseError::NO_ID_ON_LHS, NO_ID_ON_LHS_MESSAGE },
+    { Comp::Parser::ParseError::POW_PARENTHESES_NOT_CLOSED, POW_PARENTHESES_NOT_CLOSED_MESSAGE },
+    { Comp::Parser::ParseError::EXPECTED_COMMA_IN_POW, EXPECTED_COMMA_IN_POW_MESSAGE },
+    { Comp::Parser::ParseError::PARENTHESES_NOT_BALANCED, PARENTHESES_NOT_BALANCED_MESSAGE },
+    { Comp::Parser::ParseError::EXPECTED_FACTOR, EXPECTED_FACTOR_MESSAGE },
+    { Comp::Parser::ParseError::EXPECTED_NUMBER, EXPECTED_NUMBER_MESSAGE }
   };
 
   auto it = errorMsgMap.find(error);

@@ -61,8 +61,23 @@ Outputted to )") + FILE_NAME + " in " + std::to_string(MS) + " milliseconds")
 #define ILLEGAL_ID_CHARACTER_MESSAGE \
 "Illegal character detected in a variable name"
 
-#define ILLEGAL_INFIX_EXPRESSION \
-"The infix expression is not legal"
+#define NO_ID_ON_LHS_MESSAGE \
+"The left side of the assignment does not have a variable"
+
+#define POW_PARENTHESES_NOT_CLOSED_MESSAGE \
+"The power operation must end with a ')'"
+
+#define EXPECTED_COMMA_IN_POW_MESSAGE \
+"The power operation's operands must be separated with a ','"
+
+#define PARENTHESES_NOT_BALANCED_MESSAGE \
+"The parentheses in the expression are not balanced"
+
+#define EXPECTED_FACTOR_MESSAGE \
+"Expected a factor"
+
+#define EXPECTED_NUMBER_MESSAGE \
+"Expected a legal hexadecimal number that starts with a decimal digit"
 
 // Related to command line arguments
 #define ILLEGAL_COMMAND_LINE_OPTION_MESSAGE(OPTION) \

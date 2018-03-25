@@ -20,7 +20,12 @@ public:
 
   enum ParseError { NONE,
                     ILLEGAL_ID_CHARACTER,
-                    NO_ID_ON_LHS };
+                    NO_ID_ON_LHS,
+                    POW_PARENTHESES_NOT_CLOSED,
+                    EXPECTED_COMMA_IN_POW,
+                    PARENTHESES_NOT_BALANCED,
+                    EXPECTED_FACTOR,
+                    EXPECTED_NUMBER };
 
   ParseError getParseError();
   int getErrorLine();

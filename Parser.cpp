@@ -120,7 +120,9 @@ bool Parser::parseAssignment(string line) {
 bool Parser::parseExpr(string line, bool single) {
   PostfixStack postfix;
 
-  if (expr(line, 0, postfix) < 0)
+  int pos = expr(line, 0, postfix);
+
+  if (pos < 0 || pos < line.length())
     return false;
 
   generator.addExprCalc(postfix);
@@ -183,8 +185,10 @@ int Parser::id(const string &str, int index, PostfixStack &ps) {
 
   int start = index;
 
-  if (!IS_VALID_ID_CHAR(str[index], true))
+  if (!IS_VALID_ID_CHAR(str[index], true)) {
+    errorReason = ILLEGAL_ID_CHARACTER;
     return -1;
+  }
 
   do
     ++index;
@@ -262,13 +266,16 @@ int Parser::factor(const string &str, int index, PostfixStack &ps) {
   while (index < str.length() && IS_SPACE(str[index]))
     ++index;
 
-  if (index >= str.length())
+  if (index >= str.length()) {
+    errorReason = EXPECTED_FACTOR;
     return -1;
+  }
 
   if (str[index] == '(') {
     int pos = expr(str, index + 1, ps);
 
     if (pos >= str.length() || str[pos] != ')') {
+      errorReason = PARENTHESES_NOT_BALANCED;
       return -1;
     }
 
@@ -276,8 +283,10 @@ int Parser::factor(const string &str, int index, PostfixStack &ps) {
   } else if (IS_DIGIT(str[index])) {
     int pos = num(str, index, ps);
 
-    if (pos < 0)
+    if (pos < 0) {
+      errorReason = EXPECTED_NUMBER;
       return -1;
+    }
 
     return pos;
   } else if (str.substr(index, 3) == "pow") {
@@ -293,13 +302,17 @@ int Parser::factor(const string &str, int index, PostfixStack &ps) {
       if (pos < 0)
         return -1;
 
-      if (pos >= str.length() || str[pos] != ',')
+      if (pos >= str.length() || str[pos] != ',') {
+        errorReason = EXPECTED_COMMA_IN_POW;
         return -1;
+      }
 
       pos = expr(str, pos + 1, ps);
 
-      if (pos >= str.length() || str[pos] != ')')
+      if (pos >= str.length() || str[pos] != ')') {
+        errorReason = POW_PARENTHESES_NOT_CLOSED;
         return -1;
+      }
 
       ps.push_back({ ICodeGenerator::ExprElemType::OPERATION, ICODEGEN_OPERATION_POW });
       return pos + 1;
