@@ -12,23 +12,23 @@
 
 // General
 #define HELP_MESSAGE \
-(R"(Comp Compiler v0.1
-
-Compiles the language Comp into A86 Assembly.
-handcrafted.asm must be in the same directory as the compiler.
-
-Usage: comp [file_name] [<options>]
-
-You can omit file_name if you are using an option such as --help.
-Other than that, the first argument must be the file name.
-
-Options:
-    --help, -h                      Prints this message
-
-    --output, -o [out_file_name]    Sets the name of the output file
-
-Author: Alper Çakan
-)")
+"Comp Compiler v0.1\n\
+\n\
+Compiles the language Comp into A86 Assembly.\n\
+handcrafted.asm must be in the same directory as the compiler.\n\
+\n\
+Usage: comp [file_name] [<options>]\n\
+\n\
+You can omit file_name if you are using an option such as --help.\n\
+Other than that, the first argument must be the file name.\n\
+\n\
+Options:\n\
+    --help, -h                      Prints this message\n\
+\n\
+    --output, -o [out_file_name]    Sets the name of the output file\n\
+\n\
+Author: Alper Çakan\n\
+"
 
 #define OUTPUT_FILE_EXTENSION ".asm"
 
@@ -37,12 +37,12 @@ Author: Alper Çakan
 
 // Compilation messages
 #define COMPILATION_SUCCESS_MESSAGE(FILE_NAME, SECONDS) \
-(std::string(R"(The compilation has been completed successfully.
-Outputted to )") + FILE_NAME + " in " + std::to_string(SECONDS) + " seconds")
+(std::string("The compilation has been completed successfully.\n\
+Outputted to ") + FILE_NAME + " in " + std::to_string(SECONDS) + " seconds")
 
 #define COMPILATION_FAILURE_MESSAGE(LINE, REASON) \
-("Compilation failed on line " + std::to_string(LINE) + R"(:
-)" + std::string(REASON))
+("Compilation failed on line " + std::to_string(LINE) + ":\n\
+" + std::string(REASON))
 
 #define CODE_GENERATION_FAILURE_MESSAGE \
 "Code generation failed. It might be due to a syntax error."
