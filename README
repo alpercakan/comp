@@ -22,3 +22,5 @@ Testing:
   Since you need A86 assembler to assemble the output codes, there is no test automation.
   However, expeceted outputs of the output codes are given, too, for manual testing. 
 
+  (There is no "expected" output and code file for test cases which are supposed fail due to syntax error)
+
