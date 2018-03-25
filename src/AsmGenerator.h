@@ -8,6 +8,7 @@
 #include "ICodeGenerator.h"
 #include <vector>
 #include <unordered_map>
+#include <algorithm>
 
 
 class AsmGenerator final : public ICodeGenerator {
