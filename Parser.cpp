@@ -18,6 +18,7 @@ namespace Comp {
 ((x) == '0'  || (x) == '1'  || (x) == '2'  || (x) == '3'  || (x) == '4' ||\
  (x) == '5'  || (x) == '6'  || (x) == '7'  || (x) == '8'  || (x) == '9')
 
+// Classic valid ID: allow alphanumeric and '$', '_'; except for digit at start
 #define IS_VALID_ID_CHAR(x, IS_FIRST) \
 (string("$_0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz").find(x) != string::npos \
 && (!(IS_FIRST) || !IS_DIGIT(x)))
@@ -27,6 +28,8 @@ namespace Comp {
  (x) == 'A'  || (x) == 'B'  || (x) == 'C'  || (x) == 'D'  || (x) == 'E' ||\
  (x) == 'F'  || (x) == 'a'  || (x) == 'b'  || (x) == 'c'  || (x) == 'd' ||\
  (x) == 'e'  || (x) == 'f')
+
+// There is no problem about many macros, .cpp is not included by user anyways
 
 typedef vector<pair<ICodeGenerator::ExprElemType, string>> PostfixStack;
 
@@ -54,6 +57,26 @@ void Parser::trimWhitespace(string &str) {
   str = str.substr(i, j - i + 1);
 }
 
+bool Parser::isValidId(const std::string &id) {
+  if (id.empty() || !IS_VALID_ID_CHAR(id[0], true))
+    return false;
+
+  for (size_t i = 1; i < id.length(); ++i) {
+    if (!IS_VALID_ID_CHAR(id[i], false))
+      return false;
+  }
+
+  return true;
+}
+
+Parser::ParseError Parser::getParseError() {
+  return errorReason;
+}
+
+int Parser::getErrorLine() {
+  return errorLine;
+}
+
 bool Parser::parse() {
   try {
     for (size_t i = 0; i < lines.size(); ++i) {
@@ -65,13 +88,13 @@ bool Parser::parse() {
         continue;
 
       if (line.find('=') == string::npos) {
-        // No = sign, it cannot be an assignment
+        // No '=' sign, it cannot be an assignment
         if (!parseExpr(line)) {
           errorLine = i + 1;
           return false;
         }
       } else {
-        // There is = sign, it must be an assignment
+        // There is '=' sign, it must be an assignment
         if (!parseAssignment(line)) {
           errorLine = i + 1;
           return false;
@@ -85,7 +108,7 @@ bool Parser::parse() {
   return true;
 }
 
-// Assumes whitespaces are trimmed.
+// Assumes whitespaces are trimmed and line contains '='
 bool Parser::parseAssignment(string line) {
   auto eqSignPos = line.find('=');
 
@@ -114,8 +137,9 @@ bool Parser::parseAssignment(string line) {
   return true;
 }
 
-/* Assumes whitespaces are trimmed.
- * Implements LL(1) parser.
+/*
+ * Assumes whitespaces are trimmed.
+ * Implements (push-down automata based) LL(k) parser.
  */
 bool Parser::parseExpr(string line, bool single) {
   PostfixStack postfix;
@@ -132,6 +156,14 @@ bool Parser::parseExpr(string line, bool single) {
 
   return true;
 }
+
+
+ /*
+  * Methods corresponding to the variables in the grammar.
+  *
+  * Each of them takes the first unconsumed position, and returns the first
+  * unconsumed position; or -1 on failure.
+  */
 
 int Parser::expr(const string &str, int index, PostfixStack &ps) {
   if (index < 0 || index >= str.length()) return -1;
@@ -271,6 +303,7 @@ int Parser::factor(const string &str, int index, PostfixStack &ps) {
     return -1;
   }
 
+  // Use ~4 lookahead to choose which prod rule to recurse on
   if (str[index] == '(') {
     int pos = expr(str, index + 1, ps);
 
@@ -293,6 +326,10 @@ int Parser::factor(const string &str, int index, PostfixStack &ps) {
     int cpy = index;
     index += 3;
 
+    /*
+     * This is why 4 has a '~' before it above:
+     * We do not use strictly 4 lookahead, because we are skipping the spaces.
+     */
     while (index < str.length() && IS_SPACE(str[index]))
       ++index;
 
@@ -327,26 +364,6 @@ int Parser::factor(const string &str, int index, PostfixStack &ps) {
     return -1;
 
   return pos;
-}
-
-bool Parser::isValidId(const std::string &id) {
-  if (id.empty() || !IS_VALID_ID_CHAR(id[0], true))
-    return false;
-
-  for (size_t i = 1; i < id.length(); ++i) {
-    if (!IS_VALID_ID_CHAR(id[i], false))
-      return false;
-  }
-
-  return true;
-}
-
-Parser::ParseError Parser::getParseError() {
-  return errorReason;
-}
-
-int Parser::getErrorLine() {
-  return errorLine;
 }
 
 } // namespace Comp

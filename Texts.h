@@ -17,7 +17,7 @@
 Compiles the language Comp into A86 Assembly.
 handcrafted.asm must be in the same directory as the compiler.
 
-Usage: comp [file_name] <args>
+Usage: comp [file_name] [<options>]
 
 You can omit file_name if you are using an option such as --help.
 Other than that, the first argument must be the file name.
@@ -26,6 +26,8 @@ Options:
     --help, -h                      Prints this message
 
     --output, -o [out_file_name]    Sets the name of the output file
+
+Author: Alper Çakan
 )")
 
 #define OUTPUT_FILE_EXTENSION ".asm"
@@ -34,9 +36,9 @@ Options:
 
 
 // Compilation messages
-#define COMPILATION_SUCCESS_MESSAGE(FILE_NAME, MS) \
+#define COMPILATION_SUCCESS_MESSAGE(FILE_NAME, SECONDS) \
 (std::string(R"(The compilation has been completed successfully.
-Outputted to )") + FILE_NAME + " in " + std::to_string(MS) + " milliseconds")
+Outputted to )") + FILE_NAME + " in " + std::to_string(SECONDS) + " seconds")
 
 #define COMPILATION_FAILURE_MESSAGE(LINE, REASON) \
 ("Compilation failed on line " + std::to_string(LINE) + R"(:

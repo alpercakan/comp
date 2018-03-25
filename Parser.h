@@ -13,12 +13,22 @@ namespace Comp {
 class Parser {
 public:
 
+  /**
+   * Constructs the instance using the given source code and the output code
+   * generator.
+   */
   Parser(const std::vector<std::string> &lines,
          ICodeGenerator &generator);
 
+  /**
+   * Parses the given code and commands the supplied generator the generate
+   * the corresponding output code.
+   *
+   * @return True on success, false if the code has illegal syntax.
+   */
   bool parse();
 
-  enum ParseError { NONE,
+  enum ParseError { NONE, // No error
                     ILLEGAL_ID_CHARACTER,
                     NO_ID_ON_LHS,
                     POW_PARENTHESES_NOT_CLOSED,
@@ -27,7 +37,15 @@ public:
                     EXPECTED_FACTOR,
                     EXPECTED_NUMBER };
 
+  /**
+   * @return The parse error which caused parse() to return false, or NONE
+   * if parse() returned true.
+   */
   ParseError getParseError();
+
+  /**
+   * @return The number of the line which caused parse() to return false.
+   */
   int getErrorLine();
 
 private:
@@ -38,13 +56,17 @@ private:
   const std::vector<std::string> lines;
 
   bool parseAssignment(std::string);
+
+  /*
+   * Give single = false if this expression is parse of a assignment,
+   * given single = true if this expressions
+   */
   bool parseExpr(std::string, bool single = true);
 
   bool isValidId(const std::string &);
 
   void trimWhitespace(std::string &);
 
-  // Takes the first unconsumed position, returns the first unconsumed position
   int expr(const std::string&, int, std::vector<std::pair<ICodeGenerator::ExprElemType, std::string>>&);
   int term(const std::string&, int, std::vector<std::pair<ICodeGenerator::ExprElemType, std::string>>&);
   int moreTerms(const std::string&, int, std::vector<std::pair<ICodeGenerator::ExprElemType, std::string>>&);

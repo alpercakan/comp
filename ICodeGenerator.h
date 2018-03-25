@@ -9,6 +9,10 @@
 #include <vector>
 #include <string>
 
+/*
+ * XXX: Const static member initialization in abstract classes is problematic,
+ * just use #define for now.
+ */
 #define ICODEGEN_OPERATION_POW std::string("^")
 #define ICODEGEN_OPERATION_SUM std::string("+")
 #define ICODEGEN_OPERATION_MUL std::string("*")

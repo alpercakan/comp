@@ -40,9 +40,11 @@ public:
   };
 
   /**
-   * Empties and prints all the lines to the file with the given file name.
+   * Empties the file and then prints all the lines to the file whose name
+   * is given.
    *
-   * The last line also endline character, due to *NIX definition of a line.
+   * The last line also ends with the endline character, due to *NIX definition
+   * of a line.
    *
    * @param name File name
    * @param lines Vector of strings

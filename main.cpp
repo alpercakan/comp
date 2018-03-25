@@ -15,8 +15,10 @@
 
 using namespace std;
 
+
 string InputName;
 string OutputName;
+
 
 /**
  * Strips out the extension of the given file name.
@@ -53,6 +55,7 @@ int setOutputName(const vector<string> &args, int index) {
   }
 
   if (index >= args.size())
+    // Expected the file name as arg, but it's not there
     return -1;
 
   OutputName = args[index];
@@ -62,7 +65,7 @@ int setOutputName(const vector<string> &args, int index) {
 /**
  * Prints the help message.
  *
- * Parameters are just to conform the signature, and are ignored.
+ * Parameters are just to conform with the signature, and are ignored.
  */
 int printHelp(const vector<string> &args, int index) {
   cout << HELP_MESSAGE << endl;
@@ -71,9 +74,9 @@ int printHelp(const vector<string> &args, int index) {
 
 /**
  * Processes the arguments and delegates to the command functions when
- * necessary. Sets the global InputName, if supplied.
+ * necessary. Sets the global InputName, if it is supplied as an arg.
  *
- * Command functions should conform to the signature:
+ * Command functions should conform with the signature:
  * int command(const vector<string> &args, int firstUnprocessedIndex)
  * and should return the number of arguments they have consumed, or -1
  * on failure.
@@ -97,6 +100,7 @@ int resolveArgs(const vector<string> &args) {
     const string &arg = args[i];
 
     if (i == 0 && !arg.empty() && arg[0] != CL_OPT_PREFIX_CHR) {
+      // If the first argument does not begin with -, it is the input file name
       InputName = arg;
       ++i;
       continue;
@@ -136,11 +140,12 @@ void interruptHandler(int code) {
       firstTime = false;
   }
   else
-    exit(1);
+    exit(EXIT_FAILURE);
 }
 
 
 string getParseErrorMessage(Comp::Parser::ParseError error) {
+  // ParseError to error message mapping
   static const unordered_map<Comp::Parser::ParseError, string, std::hash<int>> errorMsgMap = {
     { Comp::Parser::ParseError::ILLEGAL_ID_CHARACTER, ILLEGAL_ID_CHARACTER_MESSAGE },
     { Comp::Parser::ParseError::NO_ID_ON_LHS, NO_ID_ON_LHS_MESSAGE },
@@ -162,28 +167,29 @@ string getParseErrorMessage(Comp::Parser::ParseError error) {
 
 
 int main(int argc, char *argv[]) {
-  time_t startTime = time(nullptr);
+  auto startTime = clock();
 
   signal(SIGINT, interruptHandler);
 
   vector<string> args;
   args.reserve(argc);
 
+  // First elem of argv is program path, give rest to arg parser
   for (int i = 1; i < argc; ++i) {
-    if (strcmp(argv[i], "") != 0)
-      args.push_back(argv[i]);
+    args.push_back(argv[i]);
   }
 
   if (args.empty()) {
     // Print the help message if there are no arguments
-    args.push_back(CL_OPT_HELP_LONGHAND);
+    printHelp({ }, -1);
     return EXIT_SUCCESS;
   }
 
   int retVal = resolveArgs(args);
 
-  if (retVal == 0) {
+  if (retVal == 0) { // All commands were successful
     if (OutputName.empty())
+      // Output name is same as input's, if none supplied for the former
       setOutputName({ }, -1);
 
     auto input = FileUtils::readAllLines(InputName);
@@ -216,15 +222,17 @@ int main(int argc, char *argv[]) {
     }
 
     if (FileUtils::writeLines(OutputName, asmCode)) {
-      cout << COMPILATION_SUCCESS_MESSAGE(OutputName, (time(nullptr) - startTime)) << endl;
+      cout << COMPILATION_SUCCESS_MESSAGE(OutputName, ((float)(clock() - startTime) / CLOCKS_PER_SEC)) << endl;
     } else {
       cout << FILE_WRITE_FAILURE_MESSAGE(OutputName) << endl;
       return EXIT_FAILURE;
     }
   } else if (retVal > 0) {
+    // One of the commands failed
     cout << COMMAND_FAILED_MESSAGE(args[retVal - 1]) << endl;
     return EXIT_FAILURE;
   } else {
+    // There was an illegal option
     cout << ILLEGAL_COMMAND_LINE_OPTION_MESSAGE(args[-retVal - 1]) << endl;
     return EXIT_FAILURE;
   }
