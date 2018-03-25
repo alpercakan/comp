@@ -8,7 +8,7 @@ Build Instructions:
 	   and then:
 	   		$ make	
 
-	3) The program will be created as "comp" in the directory comp_compiler/
+	3) The program will be created as "comp" in the directory comp_compiler/bin
 
 Running:
 
