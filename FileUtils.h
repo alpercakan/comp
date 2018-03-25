@@ -19,7 +19,7 @@ public:
    * @return Returns all the lines read from the file with the given file name;
    * and empty vector if an error occurs.
    */
-  static const std::vector<std::string> readAllLines(const std::string &name) {
+  static const std::vector<std::string> readAllLines(const std::string &name) noexcept {
     std::vector<std::string> res;
 
     try {
@@ -49,7 +49,7 @@ public:
    * @return True on success, false on failure
    */
   static bool writeLines(const std::string &name,
-                         const std::vector<std::string> &lines) {
+                         const std::vector<std::string> &lines) noexcept {
     try {
       std::ofstream file(name, std::ofstream::out);
 

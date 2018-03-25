@@ -79,9 +79,9 @@ namespace Comp {
 
 
 AsmGenerator::AsmGenerator(vector<string> genTemplate) : codeMap(
-    { { OPERATION_POW, POW_CODE },
-      { OPERATION_MUL, MUL_CODE },
-      { OPERATION_SUM, ADD_CODE } }
+    { { ICODEGEN_OPERATION_POW, POW_CODE },
+      { ICODEGEN_OPERATION_MUL, MUL_CODE },
+      { ICODEGEN_OPERATION_SUM, ADD_CODE } }
   ), genTemplate(genTemplate)
   { }
 
@@ -89,7 +89,7 @@ AsmGenerator::AsmGenerator(vector<string> genTemplate) : codeMap(
  * Postcondition:
  * Result of the expression will be in (BX AX).
  */
-bool AsmGenerator::addExprCalc(vector<pair<ExprElemType, string>> postfix) {
+bool AsmGenerator::addExprCalc(vector<pair<ExprElemType, string>> postfix) noexcept {
   for (auto elem : postfix) {
     switch (elem.first) {
       case ExprElemType::OPERATION: {
@@ -125,12 +125,12 @@ bool AsmGenerator::addExprCalc(vector<pair<ExprElemType, string>> postfix) {
   return true;
 }
 
-void AsmGenerator::addAssignment(const string &lhs) {
+void AsmGenerator::addAssignment(const string &lhs) noexcept {
   addLines(VAR_REG_ASSIGN_CODE(ASM_LOW_VAR_NAME(getVarIndex(lhs)), "AX"));
   addLines(VAR_REG_ASSIGN_CODE(ASM_HIGH_VAR_NAME(getVarIndex(lhs)), "BX"));
 }
 
-void AsmGenerator::addPrint() {
+void AsmGenerator::addPrint() noexcept {
   addLines(PRINT_CODE);
 }
 
@@ -177,7 +177,7 @@ vector<string> AsmGenerator::getDeclCode() {
   return declCode;
 }
 
-std::vector<std::string> AsmGenerator::getOutput() {
+std::vector<std::string> AsmGenerator::getOutput() noexcept {
   vector<string> res;
 
   for (auto line : genTemplate) {

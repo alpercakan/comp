@@ -6,7 +6,7 @@
 
 #include <iostream>
 #include <vector>
-#include <map>
+#include <unordered_map>
 #include "Texts.h"
 #include "Parser.h"
 #include "AsmGenerator.h"
@@ -87,7 +87,7 @@ int resolveArgs(const vector<string> &args) {
   typedef int (*CMD_FN_SIGNATURE)(const vector<string> &, int);
 
   // Option to function mapping, so as not to bother with a long switch-case
-  const map<string, CMD_FN_SIGNATURE> cmdMap =
+  static const unordered_map<string, CMD_FN_SIGNATURE> cmdMap =
   {
     { CL_OPT_HELP_LONGHAND, printHelp }, { CL_OPT_HELP_SHORTHAND, printHelp},
     { CL_OPT_OUTNAME_LONGHAND, setOutputName }, { CL_OPT_OUTNAME_SHORTHAND, setOutputName }
@@ -140,6 +140,23 @@ void interruptHandler(int code) {
 }
 
 
+string getParseErrorMessage(Comp::Parser::ParseError error) {
+  cout << "alper " << error << endl;
+  static const unordered_map<Comp::Parser::ParseError, string, std::hash<int>> errorMsgMap = {
+    { Comp::Parser::ParseError::ILLEGAL_ID_CHARACTER, ILLEGAL_ID_CHARACTER_MESSAGE },
+    {  }
+  };
+
+  auto it = errorMsgMap.find(error);
+
+  if (it == errorMsgMap.end()) {
+    return UNIDENTIFIED_ERROR_MESSAGE;
+  } else {
+    return it->second;
+  }
+}
+
+
 int main(int argc, char *argv[]) {
   time_t startTime = time(nullptr);
 
@@ -154,7 +171,7 @@ int main(int argc, char *argv[]) {
   }
 
   if (args.empty()) {
-    // Print help message if there is no argument
+    // Print the help message if there are no arguments
     args.push_back(CL_OPT_HELP_LONGHAND);
     return EXIT_SUCCESS;
   }
@@ -165,30 +182,47 @@ int main(int argc, char *argv[]) {
     if (OutputName.empty())
       setOutputName({ }, -1);
 
-    /*auto lines = FileUtils::readAllLines(InputName);
+    auto input = FileUtils::readAllLines(InputName);
 
-    if (lines.empty()) {
-      cout << FILE_READ_FAILURE_MESSAGE << endl;
+    if (input.empty()) {
+      cout << FILE_READ_FAILURE_MESSAGE(InputName) << endl;
 
       return EXIT_FAILURE;
-    }*/
+    }
 
-    Comp::AsmGenerator generator(FileUtils::readAllLines(TEMPLATE_FILE_NAME));
-    vector<pair<Comp::AsmGenerator::ExprElemType, string>> deneme;
-    deneme.push_back({ Comp::AsmGenerator::ExprElemType::NUMBER, "10" });
-    generator.addExprCalc(deneme);
-    generator.addPrint();
+    auto templateFile = FileUtils::readAllLines(TEMPLATE_FILE_NAME);
+    if (templateFile.empty()) {
+      cout << FILE_READ_FAILURE_MESSAGE(TEMPLATE_FILE_NAME) << endl;
+      return EXIT_FAILURE;
+    }
 
-    if (FileUtils::writeLines(OutputName, generator.getOutput())) {
+    Comp::AsmGenerator generator(templateFile);
+    Comp::Parser parser(input, generator);
+
+    if (!parser.parse()) {
+      cout << COMPILATION_FAILURE_MESSAGE(parser.getErrorLine(), getParseErrorMessage(parser.getParseError()));
+      return EXIT_FAILURE;
+    }
+
+    auto asmCode = generator.getOutput();
+
+    if (asmCode.empty()) {
+      cout << CODE_GENERATION_FAILURE_MESSAGE << endl;
+      return EXIT_FAILURE;
+    }
+
+    if (FileUtils::writeLines(OutputName, asmCode)) {
       cout << COMPILATION_SUCCESS_MESSAGE(OutputName, (time(nullptr) - startTime)) << endl;
     } else {
-      cout << COMPILATION_FAILURE_MESSAGE(__LINE__, "Because fuck you") << endl;
+      cout << FILE_WRITE_FAILURE_MESSAGE(OutputName) << endl;
+      return EXIT_FAILURE;
     }
-    //Parser parser(generator);
   } else if (retVal > 0) {
     cout << COMMAND_FAILED_MESSAGE(args[retVal - 1]) << endl;
+    return EXIT_FAILURE;
   } else {
     cout << ILLEGAL_COMMAND_LINE_OPTION_MESSAGE(args[-retVal - 1]) << endl;
+    return EXIT_FAILURE;
   }
 
   return EXIT_SUCCESS;

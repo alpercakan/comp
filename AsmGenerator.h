@@ -7,7 +7,7 @@
 
 #include "ICodeGenerator.h"
 #include <vector>
-#include <map>
+#include <unordered_map>
 
 namespace Comp {
 
@@ -20,21 +20,21 @@ public:
    */
   AsmGenerator(std::vector<std::string> genTemplate);
 
-  bool addExprCalc(std::vector<std::pair<ExprElemType, std::string>> postfix) override;
-  void addAssignment(const std::string &lhs) override;
-  void addPrint() override;
+  bool addExprCalc(std::vector<std::pair<ExprElemType, std::string>> postfix) noexcept override;
+  void addAssignment(const std::string &lhs) noexcept override;
+  void addPrint() noexcept override;
 
   /**
    * @return Empty vector on failure, the generated code lines on success.
    */
-  std::vector<std::string> getOutput() override;
+  std::vector<std::string> getOutput() noexcept override;
 
 private:
   const std::vector<std::string> genTemplate;
 
   std::vector<std::string> code;
 
-  const std::map<std::string, std::vector<std::string>> codeMap;
+  const std::unordered_map<std::string, std::vector<std::string>> codeMap;
 
   std::vector<std::string> getInitCode();
   std::vector<std::string> getDeclCode();

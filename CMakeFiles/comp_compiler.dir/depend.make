@@ -5,6 +5,7 @@ CMakeFiles/comp_compiler.dir/AsmGenerator.cpp.o: AsmGenerator.cpp
 CMakeFiles/comp_compiler.dir/AsmGenerator.cpp.o: AsmGenerator.h
 CMakeFiles/comp_compiler.dir/AsmGenerator.cpp.o: ICodeGenerator.h
 
+CMakeFiles/comp_compiler.dir/Parser.cpp.o: ICodeGenerator.h
 CMakeFiles/comp_compiler.dir/Parser.cpp.o: Parser.cpp
 CMakeFiles/comp_compiler.dir/Parser.cpp.o: Parser.h
 

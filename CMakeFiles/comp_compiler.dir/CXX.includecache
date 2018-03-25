@@ -15,7 +15,7 @@ ICodeGenerator.h
 /Users/alpercakan/Desktop/comp_compiler/ICodeGenerator.h
 vector
 -
-map
+unordered_map
 -
 
 /Users/alpercakan/Desktop/comp_compiler/FileUtils.h
@@ -43,6 +43,8 @@ string
 -
 vector
 -
+ICodeGenerator.h
+/Users/alpercakan/Desktop/comp_compiler/ICodeGenerator.h
 
 /Users/alpercakan/Desktop/comp_compiler/Texts.h
 string
@@ -53,7 +55,7 @@ iostream
 -
 vector
 -
-map
+unordered_map
 -
 Texts.h
 /Users/alpercakan/Desktop/comp_compiler/Texts.h

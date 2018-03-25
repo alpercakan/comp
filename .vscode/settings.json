@@ -36,6 +36,10 @@
     "limits": "cpp",
     "locale": "cpp",
     "ratio": "cpp",
-    "__split_buffer": "cpp"
+    "__split_buffer": "cpp",
+    "__hash_table": "cpp",
+    "unordered_map": "cpp",
+    "__locale": "cpp",
+    "regex": "cpp"
   }
 }

@@ -9,6 +9,10 @@
 #include <vector>
 #include <string>
 
+#define ICODEGEN_OPERATION_POW std::string("^")
+#define ICODEGEN_OPERATION_SUM std::string("+")
+#define ICODEGEN_OPERATION_MUL std::string("*")
+
 /**
  * Abstract base class for code generator classes.
  */
@@ -16,13 +20,6 @@ class ICodeGenerator {
 public:
 
   enum ExprElemType { OPERATION, VARIABLE, NUMBER };
-
-  /**
-   * Operation symbol constants
-   */
-  const std::string OPERATION_POW = "^"; // Power
-  const std::string OPERATION_MUL = "*"; // Multiplication
-  const std::string OPERATION_SUM = "+"; // Addition
 
   /**
    * Adds an expression calculation.
@@ -33,22 +30,22 @@ public:
    * be one of the operation symbol constants in the class. If the type is
    * Number, element must be a hexadecimal string.
    */
-  virtual bool addExprCalc(std::vector<std::pair<ExprElemType, std::string>> postfix) = 0;
+  virtual bool addExprCalc(std::vector<std::pair<ExprElemType, std::string>> postfix) noexcept = 0;
 
   /**
    * Adds an assignment to the code: lhs = <result of the last expr>
    *
    * @param lhs LHS variable's name
    */
-  virtual void addAssignment(const std::string &lhs) = 0;
+  virtual void addAssignment(const std::string &lhs) noexcept = 0;
 
   /**
    * Adds a print statement, which will print the result of the last
    * expression.
    */
-  virtual void addPrint() = 0;
+  virtual void addPrint() noexcept = 0;
 
-  virtual std::vector<std::string> getOutput() = 0;
+  virtual std::vector<std::string> getOutput() noexcept = 0;
 };
 
 #endif //COMP_COMPILER_ICODEGENERATOR_H

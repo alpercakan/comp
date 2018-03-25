@@ -40,16 +40,29 @@ Outputted to )") + FILE_NAME + " in " + std::to_string(MS) + " milliseconds")
 
 #define COMPILATION_FAILURE_MESSAGE(LINE, REASON) \
 ("Compilation failed on line " + std::to_string(LINE) + R"(:
-)" + (REASON))
+)" + std::string(REASON))
 
+#define CODE_GENERATION_FAILURE_MESSAGE \
+"Code generation failed. It might be due to a syntax error."
 
 // Error messages
 #define INTERRUPT_MESSAGE \
 ("Interrupted. I am too young to die! Do it again, if you really want it!")
 
-#define FILE_READ_FAILURE_MESSAGE \
-("The input file could not be read.")
+#define FILE_READ_FAILURE_MESSAGE(FILE_NAME) \
+(std::string("The file ") + FILE_NAME + " could not be read.")
 
+#define FILE_WRITE_FAILURE_MESSAGE(FILE_NAME) \
+(std::string("Could not write to file ") + FILE_NAME)
+
+#define UNIDENTIFIED_ERROR_MESSAGE \
+"Unidentified error"
+
+#define ILLEGAL_ID_CHARACTER_MESSAGE \
+"Illegal character detected in a variable name"
+
+#define ILLEGAL_INFIX_EXPRESSION \
+"The infix expression is not legal"
 
 // Related to command line arguments
 #define ILLEGAL_COMMAND_LINE_OPTION_MESSAGE(OPTION) \
