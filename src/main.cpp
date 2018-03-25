@@ -12,7 +12,7 @@
 #include "Parser.h"
 #include "AsmGenerator.h"
 #include "FileUtils.h"
-#include <stack>
+#include <csignal>
 
 using namespace std;
 
