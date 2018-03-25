@@ -1,0 +1,15 @@
+A = a + 0ff
+a = 1
+D = a*a**a*a*a
+aa = 2*1 + (((((1)))))*1
+J = pow   (  (  1  +  1  )  , 0  )
+C = aa+aa+aa+a
+
+
+A
+a
+D
+aa
+J
+C
+(A+a)*C + pow(aa,(D+(J+aa)))

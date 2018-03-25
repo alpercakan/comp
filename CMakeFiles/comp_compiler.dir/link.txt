@@ -1,1 +1,0 @@
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  -g -Wl,-search_paths_first -Wl,-headerpad_max_install_names  CMakeFiles/comp_compiler.dir/main.cpp.o CMakeFiles/comp_compiler.dir/Parser.cpp.o CMakeFiles/comp_compiler.dir/AsmGenerator.cpp.o  -o comp_compiler 
